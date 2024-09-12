@@ -1,55 +1,74 @@
-function toggleMenu(menuId) {
-    const menu = document.getElementById(menuId);
-    menu.style.display = menu.style.display === 'none' || menu.style.display === '' ? 'block' : 'none';
-}
+document.addEventListener('DOMContentLoaded', () => {
+    const tables = document.querySelectorAll('.table');
+    const finalTotalElement = document.getElementById('final-total');
 
-function toggleBeverages(beveragesId) {
-    const beverages = document.getElementById(beveragesId);
-    beverages.style.display = beverages.style.display === 'none' || beverages.style.display === '' ? 'block' : 'none';
-}
+    const updateTotal = (table) => {
+        const foodMenu = table.querySelector('.food-menu');
+        const drinkMenu = table.querySelector('.drink-menu');
+        const foodQuantityElement = table.querySelector('.quantity[data-type="food"]');
+        const drinkQuantityElement = table.querySelector('.quantity[data-type="drink"]');
+        const totalElement = table.querySelector('.total');
 
-let orders = {
-    mesa1: { total: 0, count: 0 },
-    mesa2: { total: 0, count: 0 },
-    mesa3: { total: 0, count: 0 }
-};
+        const foodPrice = parseFloat(foodMenu.value) || 0;
+        const drinkPrice = parseFloat(drinkMenu.value) || 0;
+        const foodQuantity = parseInt(foodQuantityElement.textContent) || 0;
+        const drinkQuantity = parseInt(drinkQuantityElement.textContent) || 0;
 
-function addOrder(mesaId) {
-    const comidaInputs = document.querySelectorAll(`#${mesaId} .comidas input`);
-    const bebidaInputs = document.querySelectorAll(`#${mesaId} .beverages input`);
+        const total = (foodPrice * foodQuantity) + (drinkPrice * drinkQuantity);
+        totalElement.textContent = total.toFixed(2);
+    };
 
-    let total = 0;
-    let count = 0;
+    const updateFinalTotal = () => {
+        let grandTotal = 0;
+        tables.forEach(table => {
+            const totalElement = table.querySelector('.total');
+            grandTotal += parseFloat(totalElement.textContent) || 0;
+        });
+        finalTotalElement.textContent = grandTotal.toFixed(2);
+    };
 
-    comidaInputs.forEach(input => {
-        const quantity = parseInt(input.value);
-        const price = parseInt(input.dataset.price);
-        if (quantity > 0) {
-            total += quantity * price;
-            count += quantity;
-        }
+    tables.forEach(table => {
+        const foodMenu = table.querySelector('.food-menu');
+        const drinkMenu = table.querySelector('.drink-menu');
+        const foodQuantityElement = table.querySelector('.quantity[data-type="food"]');
+        const drinkQuantityElement = table.querySelector('.quantity[data-type="drink"]');
+
+        table.querySelectorAll('.increment').forEach(button => {
+            button.addEventListener('click', () => {
+                const quantityElement = button.previousElementSibling;
+                quantityElement.textContent = parseInt(quantityElement.textContent) + 1;
+                updateTotal(table);
+                updateFinalTotal();
+            });
+        });
+
+        table.querySelectorAll('.decrement').forEach(button => {
+            button.addEventListener('click', () => {
+                const quantityElement = button.nextElementSibling;
+                let quantity = parseInt(quantityElement.textContent);
+                if (quantity > 0) {
+                    quantityElement.textContent = quantity - 1;
+                    updateTotal(table);
+                    updateFinalTotal();
+                }
+            });
+        });
+
+        foodMenu.addEventListener('change', () => {
+            updateTotal(table);
+            updateFinalTotal();
+        });
+
+        drinkMenu.addEventListener('change', () => {
+            updateTotal(table);
+            updateFinalTotal();
+        });
+
+        table.querySelector('.order-button').addEventListener('click', () => {
+            alert(Pedido realizado para la Mesa ${table.id.replace('table', '')}. Total: $${table.querySelector('.total').textContent});
+        });
     });
 
-    bebidaInputs.forEach(input => {
-        const quantity = parseInt(input.value);
-        const price = parseInt(input.dataset.price);
-        if (quantity > 0) {
-            total += quantity * price;
-            count += quantity;
-        }
-    });
-
-    const mesa = orders[mesaId];
-    mesa.total += total;
-    mesa.count += count;
-
-    const totalElement = document.getElementById(`total${mesaId.replace('mesa', '')}`);
-    const ordersCountElement = document.getElementById(`orders${mesaId.replace('mesa', '')}`);
-    
-    totalElement.innerText = `$${mesa.total.toLocaleString()}`;
-    ordersCountElement.innerText = mesa.count;
-
-    // Reset quantities
-    comidaInputs.forEach(input => input.value = 0);
-    bebidaInputs.forEach(input => input.value = 0);
-}
+    // Initial update of the final total
+    updateFinalTotal();
+});
