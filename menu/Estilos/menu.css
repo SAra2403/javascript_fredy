@@ -1,74 +1,98 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #a7509c;
     margin: 0;
     padding: 0;
 }
 
 .container {
+    width: 80%;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+.tables {
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
-    justify-content: space-around;
+}
+
+.table {
+    background: rgb(51, 95, 146);
+    border: 1px solid #4673aa;
+    border-radius: 8px;
     padding: 20px;
+    margin: 20px;
+    width: 300px;
+    position: relative;
 }
 
-.mesa {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    margin: 10px;
-    width: 30%;
+.order-form {
+    margin-bottom: 20px;
 }
 
-.menu {
-    display: none;
-    margin-top: 10px;
+.order-form label {
+    display: block;
+    margin-bottom: 5px;
 }
 
-.comidas, .beverages {
-    margin-top: 10px;
-}
-
-.item {
+.food-menu, .drink-menu {
+    width: 100%;
     margin-bottom: 10px;
-}
-
-select, input[type="number"] {
-    width: 60%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    margin-top: 5px;
-}
-
-.total {
-    margin-top: 20px;
-}
-
-.menu-btn, .beverages-btn {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 10px;
-}
-
-.menu-btn:hover, .beverages-btn:hover {
-    background-color: #0056b3;
 }
 
 button {
-    background-color: #28a745;
-    color: #fff;
+    background-color: #007bff;
+    color: white;
     border: none;
-    padding: 10px;
-    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 2px;
     cursor: pointer;
+    border-radius: 5px;
 }
 
-button:hover {
-    background-color: #218838;
+button.decrement {
+    background-color: #dc3545;
+}
+
+button.increment {
+    background-color: #28a745;
+}
+
+.quantity {
+    margin: 0 10px;
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+}
+
+button.order-button {
+    background-color: #28a745;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+button.order-button:hover {
+    background-color: #c65dc1;
+}
+
+p {
+    font-weight: bold;
+}
+
+.total-final {
+    background: #fd91eb;
+    border: 1px solid#fd91eb;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.total-final h2 {
+    margin: 0;
 }
